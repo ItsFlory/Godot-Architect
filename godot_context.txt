@@ -1,0 +1,515 @@
+=== PROJECT TREE (Collapsed assets) ===
+
+res://
+├── assets
+│   ├── fonts
+│   │   ├── FatPixelFont.ttf
+│   │   ├── PixulBrush-Mono.ttf
+│   │   ├── PixulBrush.ttf
+│   │   └── fonts_go_here.txt
+│   ├── particles
+│   │   ├── circle16.png
+│   │   ├── circle6.png
+│   │   └── circle8.png
+│   ├── shaders
+│   │   ├── 5 frag files
+│   │   ├── default.vert
+│   │   └── shadow.gdshader
+│   ├── sounds
+│   │   └── 114 ogg files
+│   └── sprites
+│       └── 6 png files
+├── devlog
+│   ├── 1.png
+│   ├── 2.png
+│   ├── 3.png
+│   └── 4.gif
+├── scenes
+│   ├── enemy
+│   │   ├── EnemyBullet.tscn
+│   │   ├── Seeker.tscn
+│   │   ├── shooter.tscn
+│   │   ├── splitter.tscn
+│   │   └── tank.tscn
+│   ├── gui
+│   │   └── MainMenu.tscn
+│   ├── subs
+│   │   ├── game_over.tscn
+│   │   ├── spawn_warning.tscn
+│   │   ├── SpawnEffect.tscn
+│   │   └── TransitionEffect.tscn
+│   ├── archer.tscn
+│   ├── arena.tscn
+│   ├── character.tscn
+│   ├── door.tscn
+│   ├── healer.tscn
+│   ├── MiniMap.tscn
+│   ├── PlayerBullet.tscn
+│   ├── swordsman.tscn
+│   ├── tower.tscn
+│   ├── wizard.tscn
+│   └── 8 tmp files
+├── scripts
+│   ├── char
+│   │   ├── Archer.gd
+│   │   ├── Healer.gd
+│   │   ├── PlayerBullet.gd
+│   │   ├── SnakeBody.gd.gd
+│   │   ├── Swordsman.gd
+│   │   └── Wizard.gd
+│   ├── enemy
+│   │   ├── Enemy.gd
+│   │   ├── enemy_bullet.gd
+│   │   ├── room_wave_manager.gd
+│   │   ├── seeker.gd
+│   │   ├── SeekerBehavior.gd
+│   │   ├── shooter.gd
+│   │   ├── splitter.gd
+│   │   └── tank.gd
+│   ├── generator
+│   │   └── DungeonGenerator.gd
+│   ├── gui
+│   │   ├── GameOver.gd
+│   │   ├── JuicyButton.gd
+│   │   ├── mini_map.gd
+│   │   ├── ScreenCircleEffect.gd
+│   │   ├── SnakeHUD.gd
+│   │   └── TransitionEffect.gd
+│   ├── utils
+│   │   ├── EnemySplat.gd
+│   │   ├── FX.gd
+│   │   ├── HitCircle.gd
+│   │   ├── HitParticle.gd
+│   │   ├── SpawnEffect.gd
+│   │   ├── SpawnEffectOld.gd
+│   │   ├── SpawnWarning.gd
+│   │   └── sprite.gd
+│   ├── arena.gd
+│   ├── character.gd
+│   ├── door.gd
+│   ├── global.gd
+│   ├── Gold.gd
+│   ├── RoomState.gd
+│   ├── tower.gd
+│   └── unit.gd
+├── project.godot
+├── 4 no-ext files
+├── devlog.md
+├── README.md
+└── icon.svg
+
+=== CODEBASE SUMMARY ===
+
+FILE: scripts\arena.gd
+  extends Node2D
+  class_name Arena
+  func _init() -> void
+  func _ready() -> void
+  func _process(_delta
+  func _count_nodes(node
+  func _on_room_entered(room
+  func spawn_warning(pos
+  func _lock_and_start(room
+  func _on_all_waves_cleared() -> void
+  func _all_rooms_cleared() -> bool
+  func _get_room_difficulty(room
+  func _input(event
+  func _show_victory() -> void
+
+FILE: scripts\character.gd
+  extends CharacterBody2D
+  class_name Char
+  @export var speed: float = 120.0
+  @export var is_leader: bool = false
+  @export var max_hp: float = 100.0
+  signal segment_died(segment: Char)
+  func _ready() -> void
+  func flash_effect(color
+  func hit(damage
+  func _camera_shake(cam
+  func die() -> void
+  func _die_as_leader() -> void
+  func _die_as_follower() -> void
+  func _on_segment_died(segment
+  func _on_snake_dead() -> void
+  @export var attack_range: float = 0.0
+  @export var attack_cooldown: float = 2.0
+  @export var attack_damage: float = 10.0
+  func _input(event
+  func _physics_process(delta
+  func _get_closest_enemy() -> Node2D
+  func _do_attack(_target
+  func get_my_snake_index() -> int
+  func record_pos() -> void
+  func _update_followers() -> void
+  func _add_segment(scene_path
+  func add_follower() -> void
+  func add_follower_of_type(scene_path
+
+FILE: scripts\door.gd
+  class_name Door
+  extends StaticBody2D
+  @export var is_open: bool = true :
+  @export var locked: bool = false                   # заперта (нужен ключ и т.д.)
+  func _ready() -> void
+  func update_visual_and_collision() -> void
+  func open() -> void
+  func close() -> void
+  func lock() -> void
+  func unlock() -> void
+
+FILE: scripts\global.gd
+  extends Node
+  func start_run() -> void
+  func finish_run() -> void
+  func calculate_gold() -> Array
+  func _ready() -> void
+  func _load_sounds() -> void
+  func play_sound(stream
+  func slow_time(scale
+  func _restore_time(duration
+
+FILE: scripts\Gold.gd
+  extends Area2D
+  class_name Gold
+  func setup(pos
+  func _physics_process(delta
+  func _draw() -> void
+  func _on_body_entered(body
+
+FILE: scripts\RoomState.gd
+  extends Node
+
+FILE: scripts\tower.gd
+  extends StaticBody2D
+  func hit(damage
+  func update_visual_color()
+  func calculate_damage(dmg
+  func flash_effect()
+  func die()
+  @export var drag: float = 1.5 # Сопротивление при полете от удара
+  func _ready()
+
+FILE: scripts\unit.gd
+  extends CharacterBody2D
+  class_name Unit
+  signal died
+  func hit(damage
+  func update_visual_color()
+  func calculate_damage(dmg
+  func flash_effect()
+  func die()
+  @export var drag: float = 1.5 # Сопротивление при полете от удара
+  func _ready()
+  func _physics_process(dt
+  func process_ai(dt
+  func push(force
+  func process_push(dt
+
+FILE: scripts\char\Archer.gd
+  extends Char
+  class_name Archer
+  func _ready() -> void
+  func _do_attack(target
+
+FILE: scripts\char\Healer.gd
+  extends Char
+  class_name Healer
+  func _ready() -> void
+  func _get_closest_enemy() -> Node2D
+  func _do_attack(_target
+
+FILE: scripts\char\PlayerBullet.gd
+  extends Area2D
+  class_name PlayerBullet
+  @export var speed: float = 250.0
+  @export var damage: float = 1
+  @export var lifetime: float = 3.0
+  @export var explode_on_hit: bool = false
+  @export var explode_radius: float = 48.0
+  @export var pierce: bool = false
+  func _ready() -> void
+  func _physics_process(delta
+  func _on_body_entered(body
+  func _explode() -> void
+
+FILE: scripts\char\SnakeBody.gd.gd
+  extends Node2D
+  func _ready() -> void
+  func _process(_delta
+  func _rebuild() -> void
+
+FILE: scripts\char\Swordsman.gd
+  extends Char
+  class_name Swordsman
+  func _ready() -> void
+  func _do_attack(_target
+  func _draw_attack_area() -> void
+
+FILE: scripts\char\Wizard.gd
+  extends Char
+  class_name Wizard
+  func _ready() -> void
+  func _do_attack(target
+
+FILE: scripts\enemy\Enemy.gd
+  extends CharacterBody2D
+  class_name Enemy
+  signal died
+  @export var max_hp: int = 5
+  @export var speed: float = 60.0
+  @export var damage: int = 1
+  @export var score: int = 10
+  func _ready() -> void
+  func _on_ready() -> void
+  func _on_physics(delta
+  func _physics_process(delta
+  func push(force
+  func take_damage(amount
+  func _on_hit() -> void
+  func die() -> void
+  func _track_kill() -> void
+  func _get_enemy_color() -> Color
+  func _on_die() -> void
+  func get_direction_to_player() -> Vector2
+
+FILE: scripts\enemy\enemy_bullet.gd
+  extends Area2D
+  class_name EnemyBullet
+  @export var speed: float = 140.0
+  @export var damage: int = 30
+  @export var lifetime: float = 3.0
+  func _ready() -> void
+  func _physics_process(delta
+  func _on_body_entered(body
+
+FILE: scripts\enemy\room_wave_manager.gd
+  extends Node
+  class_name RoomWaveManager
+  signal all_waves_cleared
+  signal wave_started(wave_index: int, total: int)
+  func setup(spawn_center
+  func start() -> void
+  func _spawn_wave() -> void
+  func register_enemy(enemy
+  func _on_enemy_died(wave_index
+  func _get_enemy_spawn_color(scene
+  func _wait_for_room_clear() -> void
+  func _any_enemies_in_room() -> bool
+  func _get_dungeon() -> DungeonGenerator
+  func _build_waves(difficulty
+  func _weighted_pick(pool
+
+FILE: scripts\enemy\seeker.gd
+  extends Enemy
+  class_name Seeker
+  func _on_ready() -> void
+  func _get_enemy_color() -> Color
+  func _on_physics(delta
+  func _update_neighbors() -> void
+  func push(force
+  func _on_die() -> void
+  func _track_kill() -> void
+
+FILE: scripts\enemy\SeekerBehavior.gd
+  class_name SteeringBehaviors
+
+FILE: scripts\enemy\shooter.gd
+  extends Enemy
+  class_name Shooter
+  @export var preferred_distance: float = 180.0
+  @export var fire_rate:          float = 2.0
+  func _on_ready() -> void
+  func _get_enemy_color() -> Color
+  func _on_physics(delta
+  func _shoot(dir
+  func push(force
+  func _on_die() -> void
+  func _track_kill() -> void
+
+FILE: scripts\enemy\splitter.gd
+  extends Enemy
+  class_name Splitter
+  @export var split_count: int = 3
+  @export var child_scene: PackedScene
+  func _on_ready() -> void
+  func _get_enemy_color() -> Color
+  func _on_physics(delta
+  func push(force
+  func _on_die() -> void
+  func _track_kill() -> void
+
+FILE: scripts\enemy\tank.gd
+  extends Enemy
+  class_name Tank
+  func _on_ready() -> void
+  func _get_enemy_color() -> Color
+  func _on_physics(delta
+  func push(force
+  func _on_die() -> void
+  func _track_kill() -> void
+
+FILE: scripts\generator\DungeonGenerator.gd
+  class_name DungeonGenerator
+  extends Node2D
+  signal dungeon_generated
+  @export var tilemap_layer: TileMapLayer
+  @export_group("Количество комнат")
+  @export var min_rooms: int = 2
+  @export var max_rooms: int = 3
+  @export_group("Размеры сетки комнат")
+  @export var grid_width: int = 8
+  @export var grid_height: int = 6
+  @export_group("Размер одной комнаты (в тайлах)")
+  @export var room_width: int = 25     # лучше нечётное
+  @export var room_height: int = 15    # лучше нечётное
+  @export_group("Тайлы (из вашего TileSet)")
+  @export var source_id: int = 0                  # обычно 0, если один источник
+  @export var floor_atlas: Vector2i = Vector2i(-1, -1)
+  @export var wall_atlas:  Vector2i = Vector2i(0, 0)
+  @export_group("Двери / проходы")
+  @export var door_size: int = 3                  # ширина/высота прохода в тайлах
+  signal room_entered(room_grid: Vector2i)
+  func _ready() -> void
+  func _process(_delta
+  func generate_dungeon() -> void
+  func clear_map() -> void
+  func generate_room_grid_layout() -> void
+  func count_rooms() -> int
+  func get_room_pixel_offset(grid_pos
+  func place_floors() -> void
+  func place_walls() -> void
+  func merge_shared_walls() -> void
+  func carve_doors() -> void
+  func place_door_nodes() -> void
+  func _register_door(door
+  func get_start_room_grid() -> Vector2i
+  func get_start_world_position() -> Vector2
+  func get_player_room_grid() -> Vector2i
+  func get_room_world_center(grid_pos
+  func set_room_doors_open(room
+  func is_whole_snake_in_room(room
+  func is_room_cleared(room
+  func mark_room_cleared(room
+  func get_room_for_position(world_pos
+  func copy_tiles_to_another_layer(target_layer
+
+FILE: scripts\gui\GameOver.gd
+  extends CanvasLayer
+  func _ready() -> void
+  func _animate() -> void
+  func _show_text(text
+  func _show_restart() -> void
+  func _input(event
+
+FILE: scripts\gui\JuicyButton.gd
+  extends Button
+  class_name JuicyButton
+  @export var target_scene: String = ""  # путь к сцене в инспекторе
+  func _ready() -> void
+  func _notification(what
+  func _on_hover_enter() -> void
+  func _on_hover_exit() -> void
+  func _on_press() -> void
+  func _on_release() -> void
+  func _on_click() -> void
+  func _transition_to(scene_path
+  func _find_camera() -> Camera2D
+
+FILE: scripts\gui\mini_map.gd
+  extends Control
+  @export var dungeon: DungeonGenerator
+  @export var visibility_radius: int = 1
+  func _ready() -> void
+  func _init_room_states() -> void
+  func _on_room_entered(room
+  func _update_all_targets() -> void
+  func _reveal_neighbors(room
+  func _get_target_color(gp
+  func notify_room_cleared(room
+  func _process(delta
+  func _draw() -> void
+  func _draw_connectors(gp
+  func get_rooms_in_radius(center
+
+FILE: scripts\gui\ScreenCircleEffect.gd
+  extends Node2D
+  class_name ScreenCircleEffect
+  func setup(pos
+  func change_color(delay
+  func scale_down(duration_mult
+  func _draw() -> void
+
+FILE: scripts\gui\SnakeHUD.gd
+  extends Control
+  func _ready() -> void
+  func _process(delta
+  func _draw() -> void
+  func notify_hit(unit_index
+  func _get_unit_color(unit) -> Color
+  func _get_all_units() -> Array
+  func _sync_arrays(count
+
+FILE: scripts\gui\TransitionEffect.gd
+  extends CanvasLayer
+  class_name TransitionEffect
+  func _ready() -> void
+
+FILE: scripts\utils\EnemySplat.gd
+  extends Node2D
+  class_name EnemySplat
+  func _ready() -> void
+  func _process(delta
+  func _draw() -> void
+
+FILE: scripts\utils\FX.gd
+  extends Node
+  func hit_particle(pos
+  func hit_circle(pos
+  func death_burst(pos
+  func spawn_burst(pos
+
+FILE: scripts\utils\HitCircle.gd
+  extends Node2D
+  class_name HitCircle
+  func setup(pos
+  func change_color(delay
+  func scale_down(duration_mult
+  func _draw() -> void
+
+FILE: scripts\utils\HitParticle.gd
+  extends Node2D
+  class_name HitParticle
+  func setup(pos
+  func _set_w(v
+  func _set_h(v
+  func _set_v(v
+  func _process(delta
+  func _draw() -> void
+
+FILE: scripts\utils\SpawnEffect.gd
+  extends Node2D
+  class_name SpawnEffect
+  func setup(pos
+
+FILE: scripts\utils\SpawnEffectOld.gd
+  extends Node2D
+  @export var target_color: Color = Color.RED
+  @export var action: Callable  # ← вот она! Это и есть action
+  func _ready() -> void
+  func _on_animation_finished(anim_name
+  func spawn_now() -> void
+
+FILE: scripts\utils\SpawnWarning.gd
+  extends Node2D
+  signal warning_finished
+  @export var duration: float = 1.5   # время предупреждения
+  @export var radius:   float = 16.0  # размер иконки
+  func warn_at(pos
+  func _process(delta
+  func _draw() -> void
+
+FILE: scripts\utils\sprite.gd
+  extends Sprite2D
+  class_name Sprite
+  func _process(delta
